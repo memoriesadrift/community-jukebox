@@ -1,7 +1,8 @@
 import React from "react";
 import VideoItem from "./VideoItem";
+import AddToPlayListButton from "./AddToPlayListButton";
 
-const PlayList = ({ listVideo }) => {
+const SearchList = ({ listVideo, addToPlaylist }) => {
   let hasVideos;
   if (listVideo.length > 0) hasVideos = true;
 
@@ -11,17 +12,13 @@ const PlayList = ({ listVideo }) => {
         listVideo.map((el) => (
           <div className="dark:bg-gray-400 bg-gray-200 shadow-lg grid grid-cols-1 lg:grid-cols-3 p-1 gap-2 rounded-md m-2">
             <VideoItem key={el.id.videoId} video={el} />
-            <div className="lg:col-span-1 flex items-center justify-end">
-              <button className="px-4 py-2 border-gray-300 dark:border-secondary border-2 text-gray-800 dark:shadow-secondary shadow-md dark:text-gray-800 rounded-xl text-md focus:outline-none">
-                <span>Vote</span>
-              </button>
-            </div>
+            <AddToPlayListButton addToPlaylist={addToPlaylist} video={el} />
           </div>
         ))
       ) : (
         <div className="flex items-center justify-center md:mt-4 p-4">
           <p className="text-xl font-bold text-gray-700 dark:text-gray-100">
-            Playlist is empty.
+            Search List is empty.
           </p>
         </div>
       )}
@@ -29,4 +26,4 @@ const PlayList = ({ listVideo }) => {
   );
 };
 
-export default PlayList;
+export default SearchList;

@@ -3,6 +3,12 @@
 #toggle:checked ~ label div.toggle-dot {
   @apply translate-x-3;
 }
+.tab-active {
+  @apply text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 px-4 py-2 focus:outline-none;
+}
+.tab-deactive {
+  @apply text-gray-400 dark:text-gray-700 hover:text-gray-500 dark:hover:text-gray-600 px-4 py-2 focus:outline-none;
+}
 
 @tailwind components;
 @tailwind utilities;

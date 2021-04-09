@@ -5,37 +5,74 @@ import PlayList from "./components/PlayList";
 import MostVoted from "./components/MostVoted";
 import SearchFromYoutube from "./components/SearchFromYoutube";
 import youtube from "./apis/youtube";
+import SearchList from "./components/SearchList";
 
 function App() {
   const [listVideo, setListVideo] = useState([]);
-  // const [playListVideo, setPlayListVideo] = useState([]);
+  const [mostVotedVideo, setMostVotedVideo] = useState(null);
+  const [showPlaylist, setShowPlaylist] = useState(false);
+  const [playListVideo, setPlayListVideo] = useState([]);
 
-  const searchFromYoutube = async (event) => {
+  const toggleShowPlaylist = (isActive) => {
+    setShowPlaylist(isActive);
+  };
+  const searchFromYoutube = async (searchText) => {
     await youtube
       .get("/search", {
         params: {
-          q: event.target.value,
+          q: searchText,
         },
       })
       .then((res) => {
-        console.log(res.data.items);
+        setShowPlaylist(false);
         setListVideo(res.data.items);
       });
   };
 
+  const addToPlaylist = (video) => {
+    if (playListVideo.length >= 10) {
+      console.log("Playlist is full!!!");
+      return;
+    }
+    if (playListVideo.includes(video)) {
+      console.log("This video is already in Playlist.");
+      return;
+    }
+    setPlayListVideo([...playListVideo, video]);
+    setMostVotedVideo(video);
+  };
+
   return (
-    <div className="w-full h-full dark:bg-black bg-gray-200">
-      <div className="container p-4 mx-auto max-w-screen-xl h-screen">
+    <div className="w-full min-h-screen dark:bg-black bg-gray-200">
+      <div className="container p-4 mx-auto max-w-screen-xl">
         <Navbar />
         <div className="grid md:grid-cols-3 md:gap-4 mt-4 md:mt-0">
           <div className="md:col-span-2">
             <VideoPlayer />
             <div className="w-full md:w-2/3 m-auto mt-4">
               <SearchFromYoutube searchFromYoutube={searchFromYoutube} />
-              <MostVoted />
+              <MostVoted video={mostVotedVideo} />
             </div>
           </div>
-          <PlayList listVideo={listVideo} />
+          <div className="md:col-span-1 mt-4 md:mt-0">
+            <button
+              className={showPlaylist ? "tab-active" : "tab-deactive"}
+              onClick={() => toggleShowPlaylist(true)}
+            >
+              Playlist
+            </button>
+            <button
+              className={!showPlaylist ? "tab-active" : "tab-deactive"}
+              onClick={() => toggleShowPlaylist(false)}
+            >
+              Search List
+            </button>
+            {showPlaylist ? (
+              <PlayList listVideo={playListVideo} />
+            ) : (
+              <SearchList listVideo={listVideo} addToPlaylist={addToPlaylist} />
+            )}
+          </div>
         </div>
       </div>
     </div>
