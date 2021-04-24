@@ -1,23 +1,80 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import VideoPlayer from "./components/VideoPlayer";
+import PlayList from "./components/PlayList";
+import MostVoted from "./components/MostVoted";
+import SearchFromYoutube from "./components/SearchFromYoutube";
+import youtube from "./apis/youtube";
+import SearchList from "./components/SearchList";
 
 function App() {
+  const [listVideo, setListVideo] = useState([]);
+  const [mostVotedVideo, setMostVotedVideo] = useState(null);
+  const [showPlaylist, setShowPlaylist] = useState(false);
+  const [playListVideo, setPlayListVideo] = useState([]);
+
+  const toggleShowPlaylist = (isActive) => {
+    setShowPlaylist(isActive);
+  };
+  const searchFromYoutube = async (searchText) => {
+    await youtube
+      .get("/search", {
+        params: {
+          q: searchText,
+        },
+      })
+      .then((res) => {
+        setShowPlaylist(false);
+        setListVideo(res.data.items);
+      });
+  };
+
+  const addToPlaylist = (video) => {
+    if (playListVideo.length >= 10) {
+      console.log("Playlist is full!!!");
+      return;
+    }
+    if (playListVideo.includes(video)) {
+      console.log("This video is already in Playlist.");
+      return;
+    }
+    setPlayListVideo([...playListVideo, video]);
+    setMostVotedVideo(video);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-full min-h-screen dark:bg-black bg-gray-200">
+      <div className="container p-4 mx-auto max-w-screen-xl">
+        <Navbar />
+        <div className="grid md:grid-cols-3 md:gap-4 mt-4 md:mt-0">
+          <div className="md:col-span-2">
+            <VideoPlayer />
+            <div className="w-full md:w-2/3 m-auto mt-4">
+              <SearchFromYoutube searchFromYoutube={searchFromYoutube} />
+              <MostVoted video={mostVotedVideo} />
+            </div>
+          </div>
+          <div className="md:col-span-1 mt-4 md:mt-0">
+            <button
+              className={showPlaylist ? "tab-active" : "tab-deactive"}
+              onClick={() => toggleShowPlaylist(true)}
+            >
+              Playlist
+            </button>
+            <button
+              className={!showPlaylist ? "tab-active" : "tab-deactive"}
+              onClick={() => toggleShowPlaylist(false)}
+            >
+              Search List
+            </button>
+            {showPlaylist ? (
+              <PlayList listVideo={playListVideo} />
+            ) : (
+              <SearchList listVideo={listVideo} addToPlaylist={addToPlaylist} />
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

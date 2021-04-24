@@ -1,13 +1,14 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+
+#toggle:checked ~ label div.toggle-dot {
+  @apply translate-x-3;
+}
+.tab-active {
+  @apply text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 px-4 py-2 focus:outline-none;
+}
+.tab-deactive {
+  @apply text-gray-400 dark:text-gray-700 hover:text-gray-500 dark:hover:text-gray-600 px-4 py-2 focus:outline-none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+@tailwind components;
+@tailwind utilities;
