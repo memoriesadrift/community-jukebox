@@ -1,5 +1,6 @@
 import React from "react";
 import VideoItem from "./VideoItem";
+import { voteOnVideo } from "../utils/voting";
 
 const PlayList = ({ listVideo }) => {
   let hasVideos;
@@ -12,7 +13,7 @@ const PlayList = ({ listVideo }) => {
           <div className="dark:bg-gray-400 bg-gray-200 shadow-lg grid grid-cols-1 lg:grid-cols-3 p-1 gap-2 rounded-md m-2">
             <VideoItem key={el.id.videoId} video={el} />
             <div className="lg:col-span-1 flex items-center justify-end">
-              <button className="px-4 py-2 border-gray-300 dark:border-secondary border-2 text-gray-800 dark:shadow-secondary shadow-md dark:text-gray-800 rounded-xl text-md focus:outline-none">
+              <button onClick={() => {voteOnVideo(el.id.videoId)}} className="px-4 py-2 border-gray-300 dark:border-secondary border-2 text-gray-800 dark:shadow-secondary shadow-md dark:text-gray-800 rounded-xl text-md focus:outline-none" >
                 <span>Vote</span>
               </button>
             </div>
