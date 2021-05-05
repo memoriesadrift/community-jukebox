@@ -9,6 +9,7 @@ const io = require('socket.io')(httpServer, {
 
 var users = 0;
 var currentSong = 'dQw4w9WgXcQ';
+var clients = [];
 
 io.on('connection', (client) => {
     
@@ -20,7 +21,6 @@ io.on('connection', (client) => {
     if(users == 1) {
         io.emit('changeAdmin');
     }
-    
 
     // A user disconnects, decreases users number
     client.on('disconnect', () => {
@@ -32,11 +32,16 @@ io.on('connection', (client) => {
     client.on('currentSong', () => {
         console.log('Getting current song');
         io.emit('currentSong', currentSong);
+        console.log(currentSong);
     });
 
     client.on('nextSong', (song) => {
         currentSong = song;
         io.emit('changeSong', currentSong);
+    });
+
+    client.on('becomeAdmin', () => {
+        client.broadcast.emit('removeAdmin');
     });
 });
 

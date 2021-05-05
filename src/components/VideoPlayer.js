@@ -1,8 +1,7 @@
 import React from "react";
 import YouTube from "react-youtube";
 import {socket} from "../apis/socketServer";
-
-var song = '';
+import {determineWinner} from "../utils/voting";
 
 class VideoPlayer extends React.Component {
 
@@ -11,6 +10,7 @@ class VideoPlayer extends React.Component {
     this.state = {song: "url", isAdmin: false, xyz: 0};
     this._onReady = this._onReady.bind(this);
     this.onYoutubeStateChange = this.onYoutubeStateChange.bind(this);
+    this.becomeAdmin = this.becomeAdmin.bind(this);
   }
 
   _onReady(event) {
@@ -33,6 +33,10 @@ class VideoPlayer extends React.Component {
     socket.on('changeSong', (song) => {
       this.setState({song: song});
     });
+    socket.on('removeAdmin', () => {
+      this.setState({isAdmin: false});
+      console.log('Admin removed');
+    });
   }
 
   onYoutubeStateChange(event) {
@@ -42,8 +46,17 @@ class VideoPlayer extends React.Component {
     if(event.data !== 0){
       return
     }
-    socket.emit('nextSong', '1vrEljMfXYo');
+    socket.emit('nextSong', determineWinner());
+    console.log(determineWinner());
     this.setState({xyz: Math.random()*12});
+  }
+
+  becomeAdmin(event){
+    if(this.state.isAdmin){
+      return
+    }
+    socket.emit('becomeAdmin');
+    this.setState({isAdmin: true});
   }
 
   render () {
@@ -56,8 +69,11 @@ class VideoPlayer extends React.Component {
     }
 
     return (
-      <div className="aspect-w-16 aspect-h-9" id="player">
-        <YouTube videoId={this.state.song} opts={opts} onReady={this._onReady} onStateChange={this.onYoutubeStateChange}/>
+      <div>
+        <div className="aspect-w-16 aspect-h-9" id="player">
+          <YouTube videoId={this.state.song} opts={opts} onReady={this._onReady} onStateChange={this.onYoutubeStateChange}/>
+        </div>
+        <button onClick={this.becomeAdmin}>Become Admin</button>
       </div>
     )
   } 
