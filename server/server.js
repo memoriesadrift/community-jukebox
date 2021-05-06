@@ -72,9 +72,10 @@ io.on('connection', (client) => {
         if (videosForClient.includes(video)) {
             console.log("This video is already in Playlist.");
             return;
+        } else {
+            videosForClient.push(video);
         }
 
-        videosForClient.push(video);
         console.log('Song added: ', video);
         io.emit('newPlaylist', videosForClient);
     });
