@@ -1,7 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
 import {socket} from "../apis/socketServer";
-
 class VideoPlayer extends React.Component {
 
   constructor(props){
