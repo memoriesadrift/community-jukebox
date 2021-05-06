@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import VideoPlayer from "./components/VideoPlayer";
 import PlayList from "./components/PlayList";
-import MostVoted from "./components/MostVoted";
+import MostRecent from "./components/MostRecent";
 import SearchFromYoutube from "./components/SearchFromYoutube";
 import youtube from "./apis/youtube";
 import SearchList from "./components/SearchList";
@@ -10,7 +10,7 @@ import { socket } from "./apis/socketServer";
 
 function App() {
   const [listVideo, setListVideo] = useState([]);
-  const [mostVotedVideo, setMostVotedVideo] = useState(null);
+  const [mostRecentVideo, setMostRecentVideo] = useState(null);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [playListVideo, setPlayListVideo] = useState([]);
 
@@ -36,13 +36,11 @@ function App() {
   }
 
   socket.on('newPlaylist', (playlist) => {
-    console.log('Caught newPlaylist event!');
     setPlayListVideo(playlist);
-    console.log(playListVideo);
   });
 
   const _addToPlaylist = (video) => {
-    setMostVotedVideo(video);
+    setMostRecentVideo(video);
   };
 
   return (
@@ -54,7 +52,7 @@ function App() {
             <VideoPlayer />
             <div className="w-full md:w-2/3 m-auto mt-4">
               <SearchFromYoutube searchFromYoutube={searchFromYoutube} />
-              <MostVoted video={mostVotedVideo} />
+              <MostRecent video={mostRecentVideo} />
             </div>
           </div>
           <div className="md:col-span-1 mt-4 md:mt-0">

@@ -1,5 +1,3 @@
-const { Socket } = require("dgram");
-
 const httpServer = require("http").createServer();
 const io = require('socket.io')(httpServer, {
     cors: {
@@ -9,7 +7,6 @@ const io = require('socket.io')(httpServer, {
 
 var users = 0;
 var currentSong = 'dQw4w9WgXcQ';
-var clients = [];
 var videos = new Map();
 var videosForClient = [];
 

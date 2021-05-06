@@ -13,20 +13,15 @@ class VideoPlayer extends React.Component {
   }
 
   _onReady(event) {
-    // access to player in all event handlers via event.target
     event.target.pauseVideo();
   }
 
   componentDidMount(){
-    //let newSong = fetchSong();
-    //this.setState({song: newSong});
     socket.emit('currentSong');
     socket.on('currentSong', (song) => {
         this.setState({song: song});
     });
-    console.log('song ' + this.state.song);
     socket.on('changeAdmin', () => {
-      console.log('Admin change');
       this.setState({isAdmin: true});
     });
     socket.on('changeSong', (song) => {
@@ -34,7 +29,6 @@ class VideoPlayer extends React.Component {
     });
     socket.on('removeAdmin', () => {
       this.setState({isAdmin: false});
-      console.log('Admin removed');
     });
   }
 

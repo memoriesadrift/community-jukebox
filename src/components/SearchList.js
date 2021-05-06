@@ -18,7 +18,7 @@ const SearchList = ({ listVideo, addToPlaylist }) => {
       ) : (
         <div className="flex items-center justify-center md:mt-4 p-4">
           <p className="text-xl font-bold text-gray-700 dark:text-gray-100">
-            Search List is empty.
+            Search list is empty.
           </p>
         </div>
       )}
