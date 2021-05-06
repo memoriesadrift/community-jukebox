@@ -17,3 +17,5 @@ const MostVoted = ({ video }) => {
 };
 
 export default MostVoted;
+
+//TODO: Change most voted to most recent or something, sadly that isnt working rn

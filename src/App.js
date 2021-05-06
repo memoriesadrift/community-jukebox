@@ -6,6 +6,7 @@ import MostVoted from "./components/MostVoted";
 import SearchFromYoutube from "./components/SearchFromYoutube";
 import youtube from "./apis/youtube";
 import SearchList from "./components/SearchList";
+import { socket } from "./apis/socketServer";
 
 function App() {
   const [listVideo, setListVideo] = useState([]);
@@ -30,15 +31,17 @@ function App() {
   };
 
   const addToPlaylist = (video) => {
-    if (playListVideo.length >= 10) {
-      console.log("Playlist is full!!!");
-      return;
-    }
-    if (playListVideo.includes(video)) {
-      console.log("This video is already in Playlist.");
-      return;
-    }
-    setPlayListVideo([...playListVideo, video]);
+    socket.emit('addToPlaylist', video);
+    _addToPlaylist(video);
+  }
+
+  socket.on('newPlaylist', (playlist) => {
+    console.log('Caught newPlaylist event!');
+    setPlayListVideo(playlist);
+    console.log(playListVideo);
+  });
+
+  const _addToPlaylist = (video) => {
     setMostVotedVideo(video);
   };
 

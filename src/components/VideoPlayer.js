@@ -1,7 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
 import {socket} from "../apis/socketServer";
-import {determineWinner} from "../utils/voting";
 
 class VideoPlayer extends React.Component {
 
@@ -46,8 +45,7 @@ class VideoPlayer extends React.Component {
     if(event.data !== 0){
       return
     }
-    socket.emit('nextSong', determineWinner());
-    console.log(determineWinner());
+    socket.emit('nextSong');
     this.setState({xyz: Math.random()*12});
   }
 
