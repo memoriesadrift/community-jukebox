@@ -1,8 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
 import {socket} from "../apis/socketServer";
-import {determineWinner} from "../utils/voting";
-
 class VideoPlayer extends React.Component {
 
   constructor(props){
@@ -14,20 +12,15 @@ class VideoPlayer extends React.Component {
   }
 
   _onReady(event) {
-    // access to player in all event handlers via event.target
     event.target.pauseVideo();
   }
 
   componentDidMount(){
-    //let newSong = fetchSong();
-    //this.setState({song: newSong});
     socket.emit('currentSong');
     socket.on('currentSong', (song) => {
         this.setState({song: song});
     });
-    console.log('song ' + this.state.song);
     socket.on('changeAdmin', () => {
-      console.log('Admin change');
       this.setState({isAdmin: true});
     });
     socket.on('changeSong', (song) => {
@@ -35,7 +28,6 @@ class VideoPlayer extends React.Component {
     });
     socket.on('removeAdmin', () => {
       this.setState({isAdmin: false});
-      console.log('Admin removed');
     });
   }
 
@@ -46,8 +38,7 @@ class VideoPlayer extends React.Component {
     if(event.data !== 0){
       return
     }
-    socket.emit('nextSong', determineWinner());
-    console.log(determineWinner());
+    socket.emit('nextSong');
     this.setState({xyz: Math.random()*12});
   }
 

@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import VideoPlayer from "./components/VideoPlayer";
 import PlayList from "./components/PlayList";
-import MostVoted from "./components/MostVoted";
+import MostRecent from "./components/MostRecent";
 import SearchFromYoutube from "./components/SearchFromYoutube";
 import youtube from "./apis/youtube";
 import SearchList from "./components/SearchList";
+import { socket } from "./apis/socketServer";
 
 function App() {
   const [listVideo, setListVideo] = useState([]);
-  const [mostVotedVideo, setMostVotedVideo] = useState(null);
+  const [mostRecentVideo, setMostRecentVideo] = useState(null);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [playListVideo, setPlayListVideo] = useState([]);
 
@@ -30,16 +31,16 @@ function App() {
   };
 
   const addToPlaylist = (video) => {
-    if (playListVideo.length >= 10) {
-      console.log("Playlist is full!!!");
-      return;
-    }
-    if (playListVideo.includes(video)) {
-      console.log("This video is already in Playlist.");
-      return;
-    }
-    setPlayListVideo([...playListVideo, video]);
-    setMostVotedVideo(video);
+    socket.emit('addToPlaylist', video);
+    _addToPlaylist(video);
+  }
+
+  socket.on('newPlaylist', (playlist) => {
+    setPlayListVideo(playlist);
+  });
+
+  const _addToPlaylist = (video) => {
+    setMostRecentVideo(video);
   };
 
   return (
@@ -51,7 +52,7 @@ function App() {
             <VideoPlayer />
             <div className="w-full md:w-2/3 m-auto mt-4">
               <SearchFromYoutube searchFromYoutube={searchFromYoutube} />
-              <MostVoted video={mostVotedVideo} />
+              <MostRecent video={mostRecentVideo} />
             </div>
           </div>
           <div className="md:col-span-1 mt-4 md:mt-0">
