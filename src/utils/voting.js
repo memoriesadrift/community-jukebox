@@ -20,6 +20,8 @@ export function determineWinner() {
             winningVideo = video;
         }
     });
-
-    return winningVideo;
+    if (winningVideo){
+        return winningVideo
+    }
+    return 'L_jWHffIx5E';
 }

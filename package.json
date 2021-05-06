@@ -16,9 +16,13 @@
     "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-youtube": "^7.13.1",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "server": "node server.js",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -46,6 +50,6 @@
     "@tailwindcss/postcss7-compat": "^2.1.0",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2"
   }
 }
